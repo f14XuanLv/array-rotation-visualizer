@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>轮转数组算法可视化</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .leetcode-link {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .leetcode-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+        }
+        .leetcode-title {
+            color: #0071c5;
+            font-size: 16px;
+        }
+        .mode-1d .leetcode-link {
+            display: flex;
+        }
+        .mode-2d .leetcode-link {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>轮转数组算法可视化</h1>
+        
+        <!-- LeetCode链接 -->
+        <a href="https://leetcode.cn/problems/rotate-array/description/" target="_blank" class="leetcode-link" id="leetcode-link-1d">
+            <svg class="leetcode-icon" width="52" height="52" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M68.4876 75.8086C70.7358 73.5637 74.375 73.5696 76.616 75.8217C78.857 78.0738 78.8511 81.7194 76.6029 83.9642L66.6199 93.9326C57.4098 103.129 42.3911 103.263 33.0256 94.2424C32.9715 94.1905 28.8012 90.1015 15.044 76.6115C5.89166 67.6374 4.97987 53.2774 13.5925 44.0559L29.6506 26.8617C38.1985 17.7086 53.9552 16.7082 63.7285 24.6118L78.3131 36.4069C80.783 38.4043 81.1688 42.0294 79.1748 44.5036C77.1808 46.9778 73.5621 47.3642 71.0922 45.3667L56.5077 33.5717C51.3965 29.4383 42.4555 30.006 38.0451 34.7287L21.9867 51.9232C17.7939 56.4124 18.2531 63.6445 23.085 68.3823C33.1872 78.2883 40.9729 85.9224 40.9819 85.931C45.8509 90.6207 53.7239 90.5508 58.5045 85.777L68.4876 75.8086Z" fill="#FFA116"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M44.2359 65.8329C41.0616 65.8329 38.4883 63.2551 38.4883 60.0752C38.4883 56.8954 41.0616 54.3176 44.2359 54.3176H86.6247C89.799 54.3176 92.3723 56.8954 92.3723 60.0752C92.3723 63.2551 89.799 65.8329 86.6247 65.8329H44.2359Z" fill="#B3B3B3"></path>
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M52.1745 2.74414C54.3432 0.422038 57.9804 0.300713 60.2984 2.47315C62.6165 4.64558 62.7376 8.28912 60.5689 10.6112L21.9869 51.9233C17.7939 56.4122 18.2531 63.6443 23.0847 68.3823L40.9025 85.8543C43.1709 88.0787 43.2097 91.724 40.9892 93.9964C38.7687 96.2688 35.1297 96.3077 32.8613 94.0833L15.0435 76.6112C5.89165 67.6366 4.97986 53.2768 13.5929 44.0559L52.1745 2.74414Z" fill="black"></path>
+            </svg>
+            <span class="leetcode-title">189. 轮转数组</span>
+        </a>
+        
+        <div class="mode-selector">
+            <label>选择维度:</label>
+            <select id="mode-select">
+                <option value="1d">一维数组</option>
+                <option value="2d">二维数组</option>
+            </select>
+        </div>
+        
+        <!-- 一维数组模式配置 -->
+        <div id="mode-1d-config" class="mode-config">
+            <div class="input-section">
+                <label for="array-size">输入数组长度 (1-19):</label>
+                <input type="number" id="array-size" min="1" max="19" value="10">
+                <button id="generate-btn-1d">生成卡牌</button>
+                <div class="size-control">
+                    <label for="card-size">卡牌大小:</label>
+                    <input type="range" id="card-size" min="30" max="80" value="60">
+                </div>
+            </div>
+            <div class="instructions">
+                <p>使用方法：点击并拖动选择连续的卡牌，然后点击整体水平翻转按钮。单张卡牌只会翻转内容，多张卡牌会同时翻转内容和顺序。</p>
+                <p>例如：选择 7,8,9 后翻转，结果为 9镜像,8镜像,7镜像</p>
+                <p>正面卡牌 - <span class="sample-front">红色边框</span> | 翻转卡牌 - <span class="sample-flipped">蓝色边框</span></p>
+                <p>点击左右两侧的黄色箭头可以整体循环移动数组</p>
+                <div class="action-buttons">
+                    <button id="flip-btn-1d" class="hidden">整体水平翻转</button>
+                    <button id="reset-btn-1d" class="hidden">重置所有卡牌</button>
+                    <button id="clear-selection-btn-1d" class="hidden">清除选择</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 二维矩阵模式配置 -->
+        <div id="mode-2d-config" class="mode-config hidden">
+            <div class="input-section">
+                <div class="matrix-size">
+                    <label for="matrix-rows">行数 (1-10):</label>
+                    <input type="number" id="matrix-rows" min="1" max="10" value="5">
+                    <label for="matrix-cols">列数 (1-10):</label>
+                    <input type="number" id="matrix-cols" min="1" max="10" value="7">
+                </div>
+                <button id="generate-btn-2d">生成卡牌</button>
+                <div class="size-control">
+                    <label for="card-size-2d">卡牌大小:</label>
+                    <input type="range" id="card-size-2d" min="30" max="80" value="60">
+                </div>
+            </div>
+            <div class="instructions">
+                <p>使用方法：点击并拖动选择连续的矩形区域卡牌，然后点击整体旋转180°按钮。</p>
+                <p>例如：选择左上角2×2区域卡牌后旋转，所选区域内的卡牌将整体旋转180°</p>
+                <p>正面卡牌 - <span class="sample-front">红色边框</span> | 旋转卡牌 - <span class="sample-flipped">蓝色边框</span></p>
+                <p>点击周围的黄色箭头可以整体循环移动矩阵</p>
+                <div class="action-buttons">
+                    <button id="rotate-btn-2d" class="hidden">整体旋转180°</button>
+                    <button id="reset-btn-2d" class="hidden">重置所有卡牌</button>
+                    <button id="clear-selection-btn-2d" class="hidden">清除选择</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="cards-wrapper">
+            <!-- 箭头控制区 -->
+            <div id="arrow-controls-1d" class="arrow-controls mode-1d">
+                <div id="left-arrow" class="arrow-btn left-arrow">←</div>
+                <div id="cards-container" class="cards-container"></div>
+                <div id="right-arrow" class="arrow-btn right-arrow">→</div>
+            </div>
+            
+            <!-- 二维模式的箭头控制区 -->
+            <div id="arrow-controls-2d" class="arrow-controls mode-2d hidden">
+                <div class="top-arrow-container">
+                    <div id="up-arrow" class="arrow-btn up-arrow">↑</div>
+                </div>
+                <div class="middle-container">
+                    <div id="left-arrow-2d" class="arrow-btn left-arrow">←</div>
+                    <div id="cards-container-2d" class="cards-container"></div>
+                    <div id="right-arrow-2d" class="arrow-btn right-arrow">→</div>
+                </div>
+                <div class="bottom-arrow-container">
+                    <div id="down-arrow" class="arrow-btn down-arrow">↓</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // 当切换模式时，控制LeetCode链接的显示和隐藏
+        document.getElementById('mode-select').addEventListener('change', function() {
+            const leetcodeLink = document.getElementById('leetcode-link-1d');
+            if (this.value === '1d') {
+                leetcodeLink.style.display = 'flex';
+            } else {
+                leetcodeLink.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
